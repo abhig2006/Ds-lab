@@ -1,0 +1,116 @@
+#include <stdio.h>
+void selection(int a[],int n){
+    int i,j,min,t;
+    for(i=0;i<n-1;i++){
+        min=i;
+        for(j=i+1;j<n;j++)
+            if(a[j]<a[min]) min=j;
+        t=a[i]; a[i]=a[min]; a[min]=t;
+    }
+}
+void insertion(int a[],int n){
+    int i,j,key;
+    for(i=1;i<n;i++){
+        key=a[i];
+        j=i-1;
+        while(j>=0 && a[j]>key){
+            a[j+1]=a[j];
+            j--;
+        }
+        a[j+1]=key;
+    }
+}
+void bubble(int a[],int n){
+    int i,j,t;
+    for(i=0;i<n-1;i++)
+        for(j=0;j<n-i-1;j++)
+            if(a[j]>a[j+1]){
+                t=a[j];
+                a[j]=a[j+1];
+                a[j+1]=t;
+            }
+}
+void merge_arr(int a[],int l,int m,int r){
+    int i=l,j=m+1,k=0,b[1000];
+    while(i<=m && j<=r){
+        if(a[i]<a[j]) b[k++]=a[i++];
+        else b[k++]=a[j++];
+    }
+    while(i<=m) b[k++]=a[i++];
+    while(j<=r) b[k++]=a[j++];
+    for(i=l,j=0;i<=r;i++,j++) a[i]=b[j];
+}
+void mergesort(int a[],int l,int r){
+    if(l<r){
+        int m=(l+r)/2;
+        mergesort(a,l,m);
+        mergesort(a,m+1,r);
+        merge_arr(a,l,m,r);
+    }
+}
+int partition(int a[],int l,int r){
+    int p=a[r],i=l-1,j,t;
+    for(j=l;j<r;j++){
+        if(a[j]<=p){
+            i++;
+            t=a[i]; a[i]=a[j]; a[j]=t;
+        }
+    }
+    t=a[i+1]; a[i+1]=a[r]; a[r]=t;
+    return i+1;
+}
+void quicksort(int a[],int l,int r){
+    if(l<r){
+        int p=partition(a,l,r);
+        quicksort(a,l,p-1);
+        quicksort(a,p+1,r);
+    }
+}
+void print(int a[],int n){
+    int i;
+    for(i=0;i<n;i++) printf("%d ",a[i]);
+    printf("\n");
+}
+int main(){
+    int n,i,ch,a[100];
+    scanf("%d",&n);
+    for(i=0;i<n;i++) scanf("%d",&a[i]);
+    scanf("%d",&ch);
+    if(ch==1) selection(a,n);
+    else if(ch==2) insertion(a,n);
+    else if(ch==3) bubble(a,n);
+    else if(ch==4) mergesort(a,0,n-1);
+    else if(ch==5) quicksort(a,0,n-1);
+
+    print(a,n);
+    return 0;
+}
+
+
+
+
+
+
+
+#include <stdio.h>
+int main(){
+    int n,i,l,r,min,max,t,a[100];
+    scanf("%d",&n);
+    for(i=0;i<n;i++) scanf("%d",&a[i]);
+
+    for(l=0,r=n-1; l<r; l++,r--){
+        min=l; max=l;
+        for(i=l;i<=r;i++){
+            if(a[i]<a[min]) min=i;
+            if(a[i]>a[max]) max=i;
+        }
+
+        t=a[l]; a[l]=a[min]; a[min]=t;
+
+        if(max==l) max=min;
+
+        t=a[r]; a[r]=a[max]; a[max]=t;
+    }
+    for(i=0;i<n;i++) printf("%d ",a[i]);
+    return 0;
+}
